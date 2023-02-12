@@ -41,7 +41,7 @@ func (b *Boolean) Inspect() string {
 
 type Null struct {}
 
-func (n *Null) Type() string {
+func (n *Null) Type() ObjectType {
 	return NULL_OBJ
 }
 
