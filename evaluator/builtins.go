@@ -1,6 +1,8 @@
 package evaluator
 
-import "kinolang/object"
+import (
+	"kinolang/object"
+)
 
 var builtins = map[string]*object.Builtin{
 	"len": &object.Builtin{
@@ -104,6 +106,63 @@ var builtins = map[string]*object.Builtin{
 			newElements[length] = args[1]
 
 			return &object.Array{Elements: newElements}
+		},
+	},
+	"sum": &object.Builtin{
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 1 {
+				return newError("wrong number of arguments. got=%d, want=1",
+					len(args))
+			}
+
+			if args[0].Type() != object.ARRAY_OBJ {
+				return newError("arguments to 'sum' must be ARRAY. got=%s",
+					args[0].Type())
+			}
+
+			arr := args[0].(*object.Array)
+			length := len(arr.Elements)
+
+			var sum int64 = 0
+			for i := 0; i < length; i++ {
+				integer, ok := arr.Elements[i].(*object.Integer)
+				if !ok {
+					return newError("element of array to 'sum' must be INTEGER. got=%s",
+						arr.Elements[i].Type())
+				}
+				sum += integer.Value
+			}
+
+			return &object.Integer{Value: sum}
+		},
+	},
+	"max": &object.Builtin{
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 1 {
+				return newError("wrong number of arguments. got=%d, want=1",
+					len(args))
+			}
+
+			if args[0].Type() != object.ARRAY_OBJ {
+				return newError("arguments to 'max' must be ARRAY. got=%s",
+					args[0].Type())
+			}
+
+			arr := args[0].(*object.Array)
+			var max int64 = 0
+
+			for _, i := range arr.Elements {
+				integer, ok := i.(*object.Integer)
+				if !ok {
+					return newError("element of array to 'sum' must be INTEGER. got=%s",
+						i.Type())
+				}
+				if integer.Value > max {
+					max = integer.Value
+				}
+			}
+
+			return &object.Integer{Value: max}
 		},
 	},
 }
