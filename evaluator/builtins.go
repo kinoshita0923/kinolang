@@ -1,7 +1,11 @@
 package evaluator
 
 import (
+	"io"
 	"kinolang/object"
+	"os"
+	"strconv"
+	"strings"
 )
 
 var builtins = map[string]*object.Builtin{
@@ -163,6 +167,61 @@ var builtins = map[string]*object.Builtin{
 			}
 
 			return &object.Integer{Value: max}
+		},
+	},
+	"print": &object.Builtin{
+		Fn: func(args ...object.Object) object.Object {
+			length := len(args)
+			for index, arg := range args {
+				io.WriteString(os.Stdout, arg.Inspect())
+
+				if index < length - 1 {
+					io.WriteString(os.Stdout, ", ")
+				}
+			}
+
+			return NULL
+		},
+	},
+	"println": &object.Builtin{
+		Fn: func(args ...object.Object) object.Object {
+			length := len(args)
+			for index, arg := range args {
+				io.WriteString(os.Stdout, arg.Inspect())
+
+				if index < length - 1 {
+					io.WriteString(os.Stdout, ", ")
+				} else {
+					io.WriteString(os.Stdout, "\n")
+				}
+			}
+
+			return NULL
+		},
+	},
+	"printf": &object.Builtin{
+		Fn: func(args ...object.Object) object.Object {
+			if args[0].Type() != object.STRING_OBJ {
+				return newError("first argument to 'printf' must be STRING. got=%s",
+					args[0].Type())
+			}
+
+			length := len(args)
+			paramaters := args[1:length]
+			character := args[0].(*object.String)
+			for _, paramater := range paramaters {
+				switch paramater := paramater.(type) {
+				case *object.Integer:
+					character.Value = strings.Replace(character.Value, "%d", strconv.Itoa(int(paramater.Value)), 1)
+				case *object.String:
+					character.Value = strings.Replace(character.Value, "%s", paramater.Value, 1)
+				}
+			}
+
+			io.WriteString(os.Stdout, character.Value)
+			io.WriteString(os.Stdout, "\n")
+
+			return NULL
 		},
 	},
 }
