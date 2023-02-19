@@ -62,6 +62,20 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		if isError(val) {
 			return val
 		}
+		if _, ok := env.Get(node.Name.Value); ok {
+			val = newError("Identifier has already been declared: %s", node.Name.Value)
+			return val
+		}
+		env.Set(node.Name.Value, val)
+	case *ast.ReassignmentStatement:
+		val := Eval(node.Value, env)
+		if isError(val) {
+			return val
+		}
+		if _, ok := env.Get(node.Name.Value); !ok {
+			val = newError("identifier not found: " + node.Name.Value)
+			return val
+		}
 		env.Set(node.Name.Value, val)
 	case *ast.Identifier:
 		return evalIdentifier(node, env)

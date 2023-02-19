@@ -434,3 +434,30 @@ func (ml *MacroLiteral) String() string {
 	
 	return out.String()
 }
+
+type ReassignmentStatement struct {
+	Token token.Token
+	Name  *Identifier
+	Value Expression
+}
+
+func (rs *ReassignmentStatement) statementNode() {}
+
+func (rs *ReassignmentStatement) TokenLiteral() string {
+	return rs.Token.Literal
+}
+
+func (rs *ReassignmentStatement) String() string {
+	var out bytes.Buffer
+
+	out.WriteString(rs.Name.String())
+	out.WriteString(" = ")
+
+	if rs.Value != nil {
+		out.WriteString(rs.Value.String())
+	}
+
+	out.WriteString(";")
+
+	return out.String()
+}

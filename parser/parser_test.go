@@ -880,3 +880,61 @@ func TestMacroLiteralParsing(t *testing.T) {
 
 	testInfixExpression(t, bodyStmt.Expression, "x", "+", "y")
 }
+
+func TestReassignmentStatements(t *testing.T) {
+	tests := []struct {
+		input              string
+		expectedIdentifier string
+		expectedValue      interface{}
+	}{
+		{"x = 10;", "x", 10},
+		{"y = true;", "y", true},
+	}
+
+	for _, tt := range tests {
+		l := lexer.New(tt.input)
+		p := New(l)
+		program := p.ParseProgram()
+		checkParserErrors(t, p)
+
+		if len(program.Statements) != 1 {
+			t.Fatalf("program.Statements does not contain 1 statements. got=%d",
+				len(program.Statements))
+		}
+
+		stmt := program.Statements[0]
+		if !testReassignmentStatements(t, stmt, tt.expectedIdentifier) {
+			return
+		}
+
+		val := stmt.(*ast.ReassignmentStatement).Value
+		if !testLiteralExpression(t, val, tt.expectedValue) {
+			return
+		}
+	}
+}
+
+func testReassignmentStatements(t *testing.T, s ast.Statement, name string) bool {
+	if s.TokenLiteral() != name {
+		t.Errorf("s TokenLiteral not 'reassignment'. got=%q", s.TokenLiteral())
+		return false
+	}
+
+	reassignmentStmt, ok := s.(*ast.ReassignmentStatement)
+	if !ok {
+		t.Errorf("s not *ast.LetStatement. got=%T", s)
+		return false
+	}
+
+	if reassignmentStmt.Name.Value != name {
+		t.Errorf("letStmt.Name.Value not '%s'. got=%s", name, reassignmentStmt.Name.Value)
+		return false
+	}
+
+	if reassignmentStmt.Name.TokenLiteral() != name {
+		t.Errorf("letStmt.Name.TokenLiteral() not '%s'. got=%s",
+			name, reassignmentStmt.Name.TokenLiteral())
+	}
+
+	return true
+}
