@@ -32,6 +32,10 @@ if (5 < 10) {
 {"foo": "bar"}
 macro(x, y) { x + y; };
 for (let i = 0; i < 5; i = i + 1) {  }
+i++;
+i--;
+++i;
+--i;
 `
 
 	tests := []struct {
@@ -156,6 +160,18 @@ for (let i = 0; i < 5; i = i + 1) {  }
 		{token.RPAREN, ")"},
 		{token.LBRACE, "{"},
 		{token.RBRACE, "}"},
+		{token.IDENT, "i"},
+		{token.INCREMENT, "++"},
+		{token.SEMICOLON, ";"},
+		{token.IDENT, "i"},
+		{token.DECREMENT, "--"},
+		{token.SEMICOLON, ";"},
+		{token.INCREMENT, "++"},
+		{token.IDENT, "i"},
+		{token.SEMICOLON, ";"},
+		{token.DECREMENT, "--"},
+		{token.IDENT, "i"},
+		{token.SEMICOLON, ";"},
 		{token.EOF, ""},
 	}
 
