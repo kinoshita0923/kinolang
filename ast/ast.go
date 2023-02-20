@@ -111,6 +111,35 @@ func (rs *ReturnStatement) String() string {
 	return out.String()
 }
 
+type ForStatement struct {
+	Token          token.Token
+	Initialization Statement
+	Condition      Expression
+	Conditional    *ReassignmentStatement
+	Consequence    *BlockStatement
+}
+
+func (fs *ForStatement) statementNode() {}
+
+func (fs *ForStatement) TokenLiteral() string {
+	return fs.Token.Literal
+}
+
+func (fs *ForStatement) String() string {
+	var out bytes.Buffer
+
+	out.WriteString(fs.TokenLiteral() + " ")
+	out.WriteString("(")
+	out.WriteString(fs.Initialization.String())
+	out.WriteString(fs.Condition.String() + ";")
+	out.WriteString(fs.Conditional.String())
+	out.WriteString(")")
+	out.WriteString(" {\n")
+	out.WriteString(fs.Consequence.String() + "\n}")
+
+	return out.String()
+}
+
 type ExpressionStatement struct {
 	Token		token.Token
 	Expression	Expression

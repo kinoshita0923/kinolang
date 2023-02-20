@@ -100,6 +100,8 @@ func (p *Parser) parseStatement() ast.Statement {
 			return p.parseExpressionStatement()
 		}
 		return p.parseReassignmentStatement()
+	case token.FOR:
+		return p.parseForStatement()
 	default:
 		return p.parseExpressionStatement()
 	}
@@ -159,6 +161,51 @@ func (p *Parser) parseReassignmentStatement() *ast.ReassignmentStatement {
 	if p.peekTokenIs(token.SEMICOLON) {
 		p.nextToken()
 	}
+
+	return stmt
+}
+
+func (p *Parser) parseForStatement() *ast.ForStatement {
+	stmt := &ast.ForStatement{Token: p.curToken}
+
+	if !p.expectPeek(token.LPAREN) {
+		return nil
+	}
+	p.nextToken()
+
+	if p.curTokenIs(token.LET) {
+		stmt.Initialization = p.parseLetStatement()
+	} else if p.curTokenIs(token.IDENT) && p.peekTokenIs(token.ASSIGN) {
+		stmt.Initialization = p.parseReassignmentStatement()
+	} else {
+		return nil
+	}
+
+	if !p.curTokenIs(token.SEMICOLON) {
+		return nil
+	}
+	p.nextToken()
+
+	stmt.Condition = p.parseExpression(LOWEST)
+
+	if !p.expectPeek(token.SEMICOLON) {
+		return nil
+	}
+	p.nextToken()
+
+	stmt.Conditional = p.parseReassignmentStatement()
+
+	if !p.expectPeek(token.RPAREN) {
+		return nil
+	}
+	p.nextToken()
+
+	stmt.Consequence = p.parseBlockStatement()
+
+	if !p.curTokenIs(token.RBRACE) {
+		return nil
+	}
+	p.nextToken()
 
 	return stmt
 }
