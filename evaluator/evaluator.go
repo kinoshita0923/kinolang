@@ -79,10 +79,13 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		env.Set(node.Name.Value, val)
 	case *ast.ForStatement:
 		// 変数を初期化
-		Eval(node.Initialization, env)
+		val := Eval(node.Initialization, env)
+		if isError(val) {
+			return val
+		}
 
 		// 条件式を評価
-		val := Eval(node.Condition, env)
+		val = Eval(node.Condition, env)
 		if isError(val) {
 			return val
 		}
@@ -91,7 +94,7 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 			return val
 		}
 		condition := val.(*object.Boolean)
-		
+
 		for ; condition.Value; {
 			Eval(node.Consequence, env)
 			Eval(node.Conditional, env)
