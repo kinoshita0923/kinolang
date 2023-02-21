@@ -1,9 +1,9 @@
 package evaluator
 
 import (
+	"fmt"
 	"kinolang/ast"
 	"kinolang/object"
-	"fmt"
 )
 
 var (
@@ -36,7 +36,7 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		if isError(right) {
 			return right
 		}
-		return evalPrefixExpression(node.Operator, right)
+		return evalPrefixExpression(node.Operator, right, node, env)
 	case *ast.BlockStatement:
 		return evalBlockStatement(node, env)
 	case *ast.IfExpression:
@@ -182,12 +182,16 @@ func nativeBoolToBooleanObject(input bool) *object.Boolean {
 	return FALSE
 }
 
-func evalPrefixExpression(operator string, right object.Object) object.Object {
+func evalPrefixExpression(operator string, right object.Object, node *ast.PrefixExpression, env *object.Environment) object.Object {
 	switch operator {
 	case "!":
 		return evalBangOperatorExpression(right)
 	case "-":
 		return evalMinusPrefixOperatorExpression(right)
+	case "++":
+		return evalIncrementPrefixOperatorExpression(right, node, env)
+	case "--":
+		return evalDecrementPrefixOperatorExpression(right, node, env)
 	default:
 		return newError("unknown operator: %s%s", operator, right.Type())
 	}
@@ -213,6 +217,30 @@ func evalMinusPrefixOperatorExpression(right object.Object) object.Object {
 
 	value := right.(*object.Integer).Value
 	return &object.Integer{Value: -value}
+}
+
+func evalIncrementPrefixOperatorExpression(right object.Object, node *ast.PrefixExpression, env *object.Environment) object.Object {
+	name, ok := node.Right.(*ast.Identifier)
+	if !ok {
+		return newError("unexpected token: %s", name.TokenLiteral())
+	}
+	val := Eval(name, env)
+	inte := val.(*object.Integer)
+	inte.Value++
+	env.Set(name.Value, inte)
+	return &object.Integer{Value: inte.Value}
+}
+
+func evalDecrementPrefixOperatorExpression(right object.Object, node *ast.PrefixExpression, env *object.Environment) object.Object {
+	name, ok := node.Right.(*ast.Identifier)
+	if !ok {
+		return newError("unexpected token: %s", name.TokenLiteral())
+	}
+	val := Eval(name, env)
+	inte := val.(*object.Integer)
+	inte.Value--
+	env.Set(name.Value, inte)
+	return &object.Integer{Value: inte.Value}
 }
 
 func evalInfixExpression(

@@ -40,6 +40,8 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPrefix(token.LBRACKET, p.parseArrayLiteral)
 	p.registerPrefix(token.LBRACE, p.parseHashLiteral)
 	p.registerPrefix(token.MACRO, p.parseMacroLiteral)
+	p.registerPrefix(token.INCREMENT, p.parsePrefixExpression)
+	p.registerPrefix(token.DECREMENT, p.parsePrefixExpression)
 
 	p.infixParseFns = make(map[token.TokenType]infixParseFn)
 	p.registerInfix(token.PLUS, p.parseInfixExpression)
@@ -193,7 +195,7 @@ func (p *Parser) parseForStatement() *ast.ForStatement {
 	}
 	p.nextToken()
 
-	stmt.Conditional = p.parseReassignmentStatement()
+	stmt.Conditional = p.parseStatement()
 
 	if !p.expectPeek(token.RPAREN) {
 		return nil

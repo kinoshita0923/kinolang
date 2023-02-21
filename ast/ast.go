@@ -115,7 +115,7 @@ type ForStatement struct {
 	Token          token.Token
 	Initialization Statement
 	Condition      Expression
-	Conditional    *ReassignmentStatement
+	Conditional    Statement
 	Consequence    *BlockStatement
 }
 
