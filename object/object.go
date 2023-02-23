@@ -14,6 +14,7 @@ const (
 	INTEGER_OBJ      = "INTEGER"
 	STRING_OBJ       = "STRING"
 	BOOLEAN_OBJ      = "BOOLEAN"
+	DOUBLE_OBJ       = "DOUBLE"
 	NULL_OBJ         = "NULL"
 	RETURN_VALUE_OBJ = "RETURN_VALUE"
 	ERROR_OBJ        = "ERROR"
@@ -40,6 +41,18 @@ func (i *Integer) Type() ObjectType {
 
 func (i *Integer) Inspect() string {
 	return fmt.Sprintf("%d", i.Value)
+}
+
+type Double struct {
+	Value float64
+}
+
+func (d *Double) Type() ObjectType {
+	return DOUBLE_OBJ
+}
+
+func (d *Double) Inspect() string {
+	return fmt.Sprintf("%f", d.Value)
 }
 
 type Boolean struct {

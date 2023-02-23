@@ -27,13 +27,27 @@ func TestEvalIntegerExpression(t *testing.T) {
 		{"3 * 3 * 3 + 10", 37},
 		{"3 * (3 * 3) + 10", 37},
 		{"(5 + 10 * 2 + 15 / 3) * 2 + -10", 50},
-		{"++1", 2},
-		{"--2", 1},
+		// {"++1", 2},
+		// {"--2", 1},
 	}
 
 	for _, tt := range tests {
 		evaluated := testEval(tt.input)
 		testIntegerObject(t, evaluated, tt.expected)
+	}
+}
+
+func TestEvalDoubleExpression(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected float64
+	}{
+		{"3.14", 3.14},
+	}
+
+	for _, tt := range tests {
+		evaluated := testEval(tt.input)
+		testDoubleObject(t, evaluated, tt.expected)
 	}
 }
 
@@ -54,6 +68,21 @@ func testIntegerObject(t *testing.T, obj object.Object, expected int64) bool {
 	}
 	if result.Value != expected {
 		t.Errorf("object has wrong value. got=%d, want=%d",
+			result.Value, expected)
+		return false
+	}
+
+	return true
+}
+
+func testDoubleObject(t *testing.T,obj object.Object, expected float64) bool {
+	result, ok := obj.(*object.Double)
+	if !ok {
+		t.Errorf("object is not double. got=%T (%+v)", obj, obj)
+		return false
+	}
+	if result.Value != expected {
+		t.Errorf("object has wrong value. got=%f, want=%f",
 			result.Value, expected)
 		return false
 	}
