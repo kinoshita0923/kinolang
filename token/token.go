@@ -14,7 +14,8 @@ const (
 	// 識別子 + リテラル
 	IDENT	= "IDENT"
 	INT		= "INT"
-	STRING	=  "STRING"
+	STRING	= "STRING"
+	DOUBLE  = "DOUBLE"
 
 	// 演算子
 	ASSIGN		= "="

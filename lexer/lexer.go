@@ -2,6 +2,7 @@ package lexer
 
 import (
 	"kinolang/token"
+	"strings"
 )
 
 type Lexer struct {
@@ -107,8 +108,14 @@ func (l *Lexer) NextToken() token.Token {
 			tok.Type = token.LookupIdent(tok.Literal)
 			return tok
 		} else if isDigit(l.ch) {
-			tok.Type = token.INT
 			tok.Literal = l.readNumber()
+
+			if isFloat(tok.Literal) {
+				tok.Type = token.DOUBLE
+			} else {
+				tok.Type = token.INT
+			}
+
 			return tok
 		} else {
 			tok = newToken(token.ILLEGAL, l.ch)
@@ -143,7 +150,7 @@ func (l *Lexer) skipWhitespace() {
 
 func (l *Lexer) readNumber() string {
 	position := l.position
-	for isDigit(l.ch) {
+	for isDigit(l.ch) || l.ch == '.' {
 		l.readChar()
 	}
 	return l.input[position:l.position]
@@ -151,6 +158,10 @@ func (l *Lexer) readNumber() string {
 
 func isDigit(ch byte) bool {
 	return '0' <= ch && ch <= '9'
+}
+
+func isFloat(input string) bool {
+	return strings.Index(input, ".") != -1
 }
 
 func (l *Lexer) peekChar() byte {

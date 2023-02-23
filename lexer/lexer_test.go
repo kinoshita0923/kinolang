@@ -36,6 +36,7 @@ i++;
 i--;
 ++i;
 --i;
+let pi = 3.14;
 `
 
 	tests := []struct {
@@ -171,6 +172,11 @@ i--;
 		{token.SEMICOLON, ";"},
 		{token.DECREMENT, "--"},
 		{token.IDENT, "i"},
+		{token.SEMICOLON, ";"},
+		{token.LET, "let"},
+		{token.IDENT, "pi"},
+		{token.ASSIGN, "="},
+		{token.DOUBLE, "3.14"},
 		{token.SEMICOLON, ";"},
 		{token.EOF, ""},
 	}
