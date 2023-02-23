@@ -20,6 +20,8 @@ let result = add(five, ten);
 
 if (5 < 10) {
 	return true;
+} elif (5 == 5) {
+	return 5;
 } else {
 	return false;
 }
@@ -100,6 +102,17 @@ let pi = 3.14;
 		{token.LBRACE, "{"},
 		{token.RETURN, "return"},
 		{token.TRUE, "true"},
+		{token.SEMICOLON, ";"},
+		{token.RBRACE, "}"},
+		{token.ELIF, "elif"},
+		{token.LPAREN, "("},
+		{token.INT, "5"},
+		{token.EQ, "=="},
+		{token.INT, "5"},
+		{token.RPAREN, ")"},
+		{token.LBRACE, "{"},
+		{token.RETURN, "return"},
+		{token.INT, "5"},
 		{token.SEMICOLON, ";"},
 		{token.RBRACE, "}"},
 		{token.ELSE, "else"},
