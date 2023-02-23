@@ -173,6 +173,21 @@ func (il *IntegerLiteral) String() string {
 	return il.Token.Literal
 }
 
+type DoubleLiteral struct {
+	Token token.Token
+	Value float64
+}
+
+func (dl *DoubleLiteral) expressionNode() {}
+
+func (dl *DoubleLiteral) TokenLiteral() string {
+	return dl.Token.Literal
+}
+
+func (dl *DoubleLiteral) String() string {
+	return dl.Token.Literal
+}
+
 type PrefixExpression struct {
 	Token    token.Token
 	Operator string
