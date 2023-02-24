@@ -39,6 +39,8 @@ i--;
 ++i;
 --i;
 let pi = 3.14;
+10 <= 15;
+10 >= 5;
 `
 
 	tests := []struct {
@@ -190,6 +192,14 @@ let pi = 3.14;
 		{token.IDENT, "pi"},
 		{token.ASSIGN, "="},
 		{token.DOUBLE, "3.14"},
+		{token.SEMICOLON, ";"},
+		{token.INT, "10"},
+		{token.MORE, "<="},
+		{token.INT, "15"},
+		{token.SEMICOLON, ";"},
+		{token.INT, "10"},
+		{token.LESS, ">="},
+		{token.INT, "5"},
 		{token.SEMICOLON, ";"},
 		{token.EOF, ""},
 	}
