@@ -39,6 +39,12 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 			return right
 		}
 		return evalPrefixExpression(node.Operator, right, node, env)
+	case *ast.RearPrefixExpression:
+		left := Eval(node.Left, env)
+		if isError(left) {
+			return left
+		}
+		return evalRearPrefixExpression(node.Operator, left, node, env)
 	case *ast.BlockStatement:
 		return evalBlockStatement(node, env)
 	case *ast.IfExpression:
@@ -199,6 +205,17 @@ func evalPrefixExpression(operator string, right object.Object, node *ast.Prefix
 	}
 }
 
+func evalRearPrefixExpression(operator string, left object.Object, node *ast.RearPrefixExpression, env *object.Environment) object.Object {
+	switch operator {
+	case "++":
+		return evalIncrementRearPrefixOperatorExpression(left, node, env)
+	case "--":
+		return evalDecrementRearPrefixOperatorExpression(left, node, env)
+	default:
+		return newError("unknown operator: %s%s", operator, left.Type())
+	}
+}
+
 func evalBangOperatorExpression(right object.Object) object.Object {
 	switch right {
 	case TRUE:
@@ -243,6 +260,24 @@ func evalDecrementPrefixOperatorExpression(right object.Object, node *ast.Prefix
 	inte.Value--
 	env.Set(name.Value, inte)
 	return &object.Integer{Value: inte.Value}
+}
+
+func evalIncrementRearPrefixOperatorExpression(left object.Object, node *ast.RearPrefixExpression, env *object.Environment) object.Object {
+	val := Eval(node.Left, env)
+	inte := val.(*object.Integer)
+	previous := inte.Value
+	inte.Value++
+	env.Set(node.Left.Value, inte)
+	return &object.Integer{Value:previous}
+}
+
+func evalDecrementRearPrefixOperatorExpression(left object.Object, node *ast.RearPrefixExpression, env *object.Environment) object.Object {
+	val := Eval(node.Left, env)
+	inte := val.(*object.Integer)
+	previous := inte.Value
+	inte.Value--
+	env.Set(node.Left.Value, inte)
+	return &object.Integer{Value: previous}
 }
 
 func evalInfixExpression(

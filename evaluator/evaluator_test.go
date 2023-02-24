@@ -27,8 +27,6 @@ func TestEvalIntegerExpression(t *testing.T) {
 		{"3 * 3 * 3 + 10", 37},
 		{"3 * (3 * 3) + 10", 37},
 		{"(5 + 10 * 2 + 15 / 3) * 2 + -10", 50},
-		// {"++1", 2},
-		// {"--2", 1},
 	}
 
 	for _, tt := range tests {
@@ -596,6 +594,42 @@ func TestForStatements(t *testing.T) {
 			count;
 			`,
 			15,
+		},
+	}
+
+	for _, tt := range tests {
+		testIntegerObject(t, testEval(tt.input), tt.expected)
+	}
+}
+
+func TestPrefixExpressions(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected int64
+	} {
+		{
+			`let a = 0; a++;`,
+			1,
+		},
+		{
+			`let a = 0; a--;`,
+			-1,
+		},
+		{
+			`let a = 0; let b = ++a; b;`,
+			1,
+		},
+		{
+			`let a = 0; let b = a++; b;`,
+			0,
+		},
+		{
+			`let a = 0; let b = --a; b;`,
+			-1,
+		},
+		{
+			`let a = 0; let b = a--; b;`,
+			0,
 		},
 	}
 
