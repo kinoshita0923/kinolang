@@ -38,7 +38,7 @@ func Start(in io.Reader, out io.Writer) {
 		expanded := evaluator.ExpandMacros(program, macroEnv)
 
 		evaluated := evaluator.Eval(expanded, env)
-		if evaluated != nil {
+		if evaluated != nil && evaluated.Type() != object.NULL_OBJ {
 			io.WriteString(out, evaluated.Inspect())
 			io.WriteString(out, "\n")
 		}

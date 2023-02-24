@@ -46,7 +46,7 @@ func main() {
 		}
 
 		evaluated := evaluator.Eval(program, env)
-		if evaluated != nil {
+		if evaluated != nil && evaluated.Type() != object.NULL_OBJ {
 			io.WriteString(os.Stdout, evaluated.Inspect())
 			io.WriteString(os.Stdout, "\n")
 		}
