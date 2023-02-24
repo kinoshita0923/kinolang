@@ -211,6 +211,29 @@ func (pe *PrefixExpression) String() string {
 	return out.String()
 }
 
+type RearPrefixExpression struct {
+	Token    token.Token
+	Operator string
+	Left     string
+}
+
+func (rpe *RearPrefixExpression) expressionNode() {}
+
+func (rpe *RearPrefixExpression) TokenLiteral() string {
+	return rpe.Token.Literal
+}
+
+func (rpe *RearPrefixExpression) String() string {
+	var out bytes.Buffer
+
+	out.WriteString("(")
+	out.WriteString(rpe.Left)
+	out.WriteString(rpe.Operator)
+	out.WriteString(")")
+
+	return out.String()
+}
+
 type InfixExpression struct {
 	Token    token.Token
 	Left     Expression

@@ -291,7 +291,18 @@ func (p *Parser) parseExpression(precedence int) ast.Expression {
 }
 
 func (p *Parser) parseIdentifier() ast.Expression {
-	return &ast.Identifier{Token: p.curToken, Value: p.curToken.Literal}
+	switch p.peekToken.Type {
+	case token.INCREMENT:
+		rear :=  &ast.RearPrefixExpression{Token: p.peekToken, Operator: p.peekToken.Literal, Left: p.curToken.Literal}
+		p.nextToken()
+		return rear
+	case token.DECREMENT:
+		rear :=  &ast.RearPrefixExpression{Token: p.peekToken, Operator: p.peekToken.Literal, Left: p.curToken.Literal}
+		p.nextToken()
+		return rear
+	default:
+		return &ast.Identifier{Token: p.curToken, Value: p.curToken.Literal}
+	}
 }
 
 func (p *Parser) parseIntegerLiteral() ast.Expression {
