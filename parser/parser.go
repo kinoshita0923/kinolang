@@ -293,11 +293,13 @@ func (p *Parser) parseExpression(precedence int) ast.Expression {
 func (p *Parser) parseIdentifier() ast.Expression {
 	switch p.peekToken.Type {
 	case token.INCREMENT:
-		rear :=  &ast.RearPrefixExpression{Token: p.peekToken, Operator: p.peekToken.Literal, Left: p.curToken.Literal}
+		rear :=  &ast.RearPrefixExpression{Token: p.peekToken, Operator: p.peekToken.Literal}
+		rear.Left = &ast.Identifier{Token: p.curToken, Value: p.curToken.Literal}
 		p.nextToken()
 		return rear
 	case token.DECREMENT:
-		rear :=  &ast.RearPrefixExpression{Token: p.peekToken, Operator: p.peekToken.Literal, Left: p.curToken.Literal}
+		rear :=  &ast.RearPrefixExpression{Token: p.peekToken, Operator: p.peekToken.Literal}
+		rear.Left = &ast.Identifier{Token: p.curToken, Value: p.curToken.Literal}
 		p.nextToken()
 		return rear
 	default:

@@ -214,7 +214,7 @@ func (pe *PrefixExpression) String() string {
 type RearPrefixExpression struct {
 	Token    token.Token
 	Operator string
-	Left     string
+	Left     *Identifier
 }
 
 func (rpe *RearPrefixExpression) expressionNode() {}
@@ -227,7 +227,7 @@ func (rpe *RearPrefixExpression) String() string {
 	var out bytes.Buffer
 
 	out.WriteString("(")
-	out.WriteString(rpe.Left)
+	out.WriteString(rpe.Left.String())
 	out.WriteString(rpe.Operator)
 	out.WriteString(")")
 

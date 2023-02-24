@@ -292,7 +292,7 @@ func TestRearPrefixExpression(t *testing.T) {
 			t.Fatalf("exp.Operator is not '%s'. got=%s",
 				tt.operator, exp.Operator)
 		}
-		if exp.Left != tt.value {
+		if exp.Left.String() != tt.value {
 			return
 		}
 	}
