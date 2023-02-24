@@ -609,11 +609,11 @@ func TestPrefixExpressions(t *testing.T) {
 	} {
 		{
 			`let a = 0; a++;`,
-			1,
+			0,
 		},
 		{
 			`let a = 0; a--;`,
-			-1,
+			0,
 		},
 		{
 			`let a = 0; let b = ++a; b;`,
