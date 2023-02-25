@@ -278,6 +278,7 @@ type IfExpression struct {
 	Token       token.Token // The 'if' token
 	Condition   Expression
 	Consequence *BlockStatement
+	ELIF        Statement
 	Alternative *BlockStatement
 }
 
@@ -294,6 +295,10 @@ func (ie *IfExpression) String() string {
 	out.WriteString(ie.Condition.String())
 	out.WriteString(" ")
 	out.WriteString(ie.Consequence.String())
+
+	if ie.ELIF != nil {
+		out.WriteString(ie.ELIF.String())
+	}
 
 	if ie.Alternative != nil {
 		out.WriteString("else ")
