@@ -596,11 +596,32 @@ func TestForStatements(t *testing.T) {
 			let count = 0;
 			for (let i = 0; i < 6; i = i + 1) {
 				count = count + i;
-			}
-			println("hello")
+			};
 			count;
 			`,
 			15,
+		},
+	}
+
+	for _, tt := range tests {
+		testIntegerObject(t, testEval(tt.input), tt.expected)
+	}
+}
+
+func TestWhileStatements(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected int64
+	}{
+		{
+			`
+			let count = 0;
+			while (count <= 10) {
+				count = count + 1;
+			};
+			count;
+			`,
+			11,
 		},
 	}
 

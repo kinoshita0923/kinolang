@@ -140,6 +140,31 @@ func (fs *ForStatement) String() string {
 	return out.String()
 }
 
+type WhileStatement struct {
+	Token       token.Token
+	Condition   Expression
+	Consequence *BlockStatement
+}
+
+func (ws *WhileStatement) statementNode() {}
+
+func (ws *WhileStatement) TokenLiteral() string {
+	return ws.Token.Literal
+}
+
+func (ws *WhileStatement) String() string {
+	var out bytes.Buffer
+
+	out.WriteString(ws.TokenLiteral() + " ")
+	out.WriteString("(")
+	out.WriteString(ws.Condition.String())
+	out.WriteString(")")
+	out.WriteString(" {\n")
+	out.WriteString(ws.Consequence.String() + "\n}")
+
+	return out.String()
+}
+
 type ExpressionStatement struct {
 	Token		token.Token
 	Expression	Expression

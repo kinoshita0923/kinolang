@@ -108,6 +108,22 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 			Eval(node.Conditional, env)
 			condition = Eval(node.Condition, env).(*object.Boolean)
 		}
+
+	case *ast.WhileStatement:
+		val := Eval(node.Condition, env)
+		if isError(val) {
+			return val
+		}
+		if val == nil {
+			val = newError("unexpected token: %s", node.Condition.TokenLiteral())
+			return val
+		}
+		condition := val.(*object.Boolean)
+
+		for ; condition.Value; {
+			Eval(node.Consequence, env)
+			condition = Eval(node.Condition, env).(*object.Boolean)
+		}
 	case *ast.Identifier:
 		return evalIdentifier(node, env)
 	case *ast.FunctionLiteral:

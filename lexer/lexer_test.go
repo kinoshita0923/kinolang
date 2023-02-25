@@ -41,6 +41,7 @@ i--;
 let pi = 3.14;
 10 <= 15;
 10 >= 5;
+while (i < 5) { }
 `
 
 	tests := []struct {
@@ -201,6 +202,14 @@ let pi = 3.14;
 		{token.LESS, ">="},
 		{token.INT, "5"},
 		{token.SEMICOLON, ";"},
+		{token.WHILE, "while"},
+		{token.LPAREN, "("},
+		{token.IDENT, "i"},
+		{token.LT, "<"},
+		{token.INT, "5"},
+		{token.RPAREN, ")"},
+		{token.LBRACE, "{"},
+		{token.RBRACE, "}"},
 		{token.EOF, ""},
 	}
 
