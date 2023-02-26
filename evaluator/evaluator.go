@@ -309,6 +309,8 @@ func evalInfixExpression(
 		return nativeBoolToBooleanObject(left == right)
 	case operator == "!=":
 		return nativeBoolToBooleanObject(left != right)
+	case (left.Type() == object.INTEGER_OBJ || left.Type() == object.DOUBLE_OBJ) && (right.Type() == object.INTEGER_OBJ || right.Type() == object.DOUBLE_OBJ):
+		return evalDoubleInfixExpression(operator, left, right)
 	case left.Type() != right.Type():
 		return newError("type mismatch: %s %s %s",
 			left.Type(), operator, right.Type())
@@ -350,6 +352,60 @@ func evalIntegerInfixExpression(
 		return newError("unknown operator: %s %s %s",
 			left.Type(), operator, right.Type())
 	}
+}
+
+func evalDoubleInfixExpression(
+	operator string,
+	left, right object.Object,
+) object.Object {
+	var leftVal, rightVal float64
+	switch left := left.(type) {
+	case *object.Integer:
+		leftVal = float64(left.Value)
+	case *object.Double:
+		leftVal = left.Value
+	default:
+		return newError("type mismatch")
+	}
+
+	switch right := right.(type) {
+	case *object.Integer:
+		rightVal = float64(right.Value)
+	case *object.Double:
+		rightVal = right.Value
+	default:
+		return newError("type mismatch")
+	}
+
+	switch operator {
+	case "+":
+		sum := leftVal + rightVal
+		result := &object.Double{Value: sum}
+		return result
+	case "-":
+		difference := leftVal - rightVal
+		return &object.Double{Value: difference}
+	case "*":
+		product := leftVal * rightVal
+		return &object.Double{Value: product}
+	case "/":
+		return &object.Double{Value: leftVal / rightVal}
+	case "<":
+		return nativeBoolToBooleanObject(leftVal < rightVal)
+	case ">":
+		return nativeBoolToBooleanObject(leftVal > rightVal)
+	case "==":
+		return nativeBoolToBooleanObject(leftVal == rightVal)
+	case "!=":
+		return nativeBoolToBooleanObject(leftVal != rightVal)
+	case "<=":
+		return nativeBoolToBooleanObject(leftVal <= rightVal)
+	case ">=":
+		return nativeBoolToBooleanObject(leftVal >= rightVal)
+	default:
+		return newError("unknown operator: %s %s %s",
+			left.Type(), operator, right.Type())
+	}	
 }
 
 func evalIfExpression(ie *ast.IfExpression, env *object.Environment) object.Object {
