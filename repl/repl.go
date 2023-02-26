@@ -4,10 +4,10 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"kinolang/lexer"
-	"kinolang/parser"
-	"kinolang/evaluator"
-	"kinolang/object"
+	"monkey/lexer"
+	"monkey/parser"
+	"monkey/evaluator"
+	"monkey/object"
 )
 
 const PROMPT = ">>"

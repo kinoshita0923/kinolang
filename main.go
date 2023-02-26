@@ -7,11 +7,11 @@ import (
 	"os"
 	"os/user"
 	"path/filepath"
-	"kinolang/repl"
-	"kinolang/lexer"
-	"kinolang/parser"
-	"kinolang/evaluator"
-	"kinolang/object"
+	"monkey/repl"
+	"monkey/lexer"
+	"monkey/parser"
+	"monkey/evaluator"
+	"monkey/object"
 )
 
 func main() {
@@ -20,7 +20,7 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		fmt.Printf("Hello %s! This is the Kinolang programming language!\n",
+		fmt.Printf("Hello %s! This is the monkey programming language!\n",
 			user.Username)
 		fmt.Printf("Feel free to type in commands\n")
 		repl.Start(os.Stdin, os.Stdout)

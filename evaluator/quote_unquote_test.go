@@ -3,7 +3,7 @@ package evaluator
 import (
 	"testing"
 
-	"kinolang/object"
+	"monkey/object"
 )
 
 func TestQuote(t *testing.T) {

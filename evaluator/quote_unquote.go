@@ -1,9 +1,9 @@
 package evaluator
 
 import (
-	"kinolang/ast"
-	"kinolang/object"
-	"kinolang/token"
+	"monkey/ast"
+	"monkey/object"
+	"monkey/token"
 
 	"fmt"
 )

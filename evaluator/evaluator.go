@@ -2,8 +2,8 @@ package evaluator
 
 import (
 	"fmt"
-	"kinolang/ast"
-	"kinolang/object"
+	"monkey/ast"
+	"monkey/object"
 )
 
 var (

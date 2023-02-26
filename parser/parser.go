@@ -2,9 +2,9 @@ package parser
 
 import (
 	"fmt"
-	"kinolang/ast"
-	"kinolang/lexer"
-	"kinolang/token"
+	"monkey/ast"
+	"monkey/lexer"
+	"monkey/token"
 	"strconv"
 )
 

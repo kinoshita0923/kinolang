@@ -3,7 +3,7 @@ package object
 import (
 	"bytes"
 	"fmt"
-	"kinolang/ast"
+	"monkey/ast"
 	"strings"
 	"hash/fnv"
 )

@@ -2,8 +2,8 @@ package parser
 
 import (
 	"fmt"
-	"kinolang/ast"
-	"kinolang/lexer"
+	"monkey/ast"
+	"monkey/lexer"
 	"testing"
 )
 

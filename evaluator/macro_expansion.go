@@ -1,8 +1,8 @@
 package evaluator
 
 import (
-	"kinolang/ast"
-	"kinolang/object"
+	"monkey/ast"
+	"monkey/object"
 )
 
 func DefineMacros(program *ast.Program, env *object.Environment) {

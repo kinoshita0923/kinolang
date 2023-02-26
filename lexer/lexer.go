@@ -1,7 +1,7 @@
 package lexer
 
 import (
-	"kinolang/token"
+	"monkey/token"
 	"strings"
 )
 
