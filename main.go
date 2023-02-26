@@ -36,6 +36,12 @@ func main() {
 		// ファイルからソースを読み込む
 		source, err := ioutil.ReadAll(file)
 
+		e := filepath.Ext(absPath)
+		if e != ".kn" {
+			fmt.Printf("different extensions. want='.kn', got='%s'\n", e)
+			return
+		}
+
 		env := object.NewEnvironment()
 		l := lexer.New(string(source))
 		p := parser.New(l)
