@@ -2,7 +2,7 @@ package ast
 
 import (
 	"bytes"
-	"monkey/token"
+	"kinolang/token"
 	"strings"
 )
 

@@ -1,7 +1,7 @@
 package ast
 
 import (
-	"monkey/token"
+	"kinolang/token"
 	"testing"
 )
 

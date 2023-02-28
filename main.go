@@ -7,11 +7,11 @@ import (
 	"os"
 	"os/user"
 	"path/filepath"
-	"monkey/repl"
-	"monkey/lexer"
-	"monkey/parser"
-	"monkey/evaluator"
-	"monkey/object"
+	"kinolang/repl"
+	"kinolang/lexer"
+	"kinolang/parser"
+	"kinolang/evaluator"
+	"kinolang/object"
 )
 
 func main() {

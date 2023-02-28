@@ -3,7 +3,7 @@ package lexer
 import (
 	"testing"
 
-	"monkey/token"
+	"kinolang/token"
 )
 
 func TestNextToken(t *testing.T) {

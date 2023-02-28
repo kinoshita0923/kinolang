@@ -2,7 +2,7 @@ package evaluator
 
 import (
 	"io"
-	"monkey/object"
+	"kinolang/object"
 	"os"
 	"strconv"
 	"strings"

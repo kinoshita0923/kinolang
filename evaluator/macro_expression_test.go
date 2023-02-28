@@ -1,10 +1,10 @@
 package evaluator
 
 import (
-	"monkey/ast"
-	"monkey/lexer"
-	"monkey/object"
-	"monkey/parser"
+	"kinolang/ast"
+	"kinolang/lexer"
+	"kinolang/object"
+	"kinolang/parser"
 	"testing"
 )
 
