@@ -42,6 +42,8 @@ let pi = 3.14;
 10 <= 15;
 10 >= 5;
 while (i < 5) { }
+class a {};
+let b = new a();
 `
 
 	tests := []struct {
@@ -210,6 +212,19 @@ while (i < 5) { }
 		{token.RPAREN, ")"},
 		{token.LBRACE, "{"},
 		{token.RBRACE, "}"},
+		{token.CLASS, "class"},
+		{token.IDENT, "a"},
+		{token.LBRACE, "{"},
+		{token.RBRACE, "}"},
+		{token.SEMICOLON, ";"},
+		{token.LET, "let"},
+		{token.IDENT, "b"},
+		{token.ASSIGN, "="},
+		{token.NEW, "new"},
+		{token.IDENT, "a"},
+		{token.LPAREN, "("},
+		{token.RPAREN, ")"},
+		{token.SEMICOLON, ";"},
 		{token.EOF, ""},
 	}
 
